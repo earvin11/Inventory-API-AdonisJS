@@ -65,8 +65,12 @@ export class UsersController {
     }
 
     async destroy({ request, response }: HttpContextContract) {
-        response.ok({
-            request: request.all()
-        })
+        try {
+            await this.userService.deleteUser(request.params().uuid);
+            response.noContent();
+        } catch (error) {
+            console.log(error);
+            response.internalServerError({ message: 'Internal server error' });
+        }
     }
 }
