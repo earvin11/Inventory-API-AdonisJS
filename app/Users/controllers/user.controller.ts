@@ -5,12 +5,14 @@ export class UsersController {
     constructor(private userService: UsersService) {}
 
     async store({ request, response }: HttpContextContract) {
+        const { email, password, roleUuid } = request.body();
         try {
             const newUser = await this.userService.createUser({
-                email: request.body().email,
-                password: request.body().password
+                email,
+                password,
+                roleUuid
             });
-    
+
             response.created({
                 message: 'User created',
                 newUser
@@ -49,9 +51,9 @@ export class UsersController {
 
     async update({ request, response }: HttpContextContract) {
         try {
-            const { email, password } = request.body();
+            // const { email, password } = request.body();
             const { uuid } = request.params();
-            const user = await this.userService.updateOne({ uuid, email, password });
+            const user = await this.userService.updateOne({ uuid, ...request.body() });
             if(!user) return response.notFound({ message: 'User not found' });
     
             response.ok({

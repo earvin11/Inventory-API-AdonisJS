@@ -20,6 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import AuthRoutes from 'App/Auth/routes/auth.routes'
+import RolesRoutes from 'App/Roles/routes/roles.routes'
 import UserRoutes from 'App/Users/routes/user.routes'
 
 Route.get('/', async () => {
@@ -27,4 +28,5 @@ Route.get('/', async () => {
 })
 
 Route.group(AuthRoutes).prefix('auth');
+Route.group(RolesRoutes).prefix('roles');
 Route.group(UserRoutes).prefix('users');

@@ -6,6 +6,7 @@ const UserSchema = new Schema<User>({
     uuid: { type: String },
     email: { type: String },
     password: { type: String },
+    role: { type: Object, required: true }
 
 }, { versionKey: false, timestamps: true });
 

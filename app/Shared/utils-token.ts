@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 export const generateJWT = (uuid: string) => {
 
     return new Promise( (resolve, reject) => {
-
         const payload = { uuid };
 
         jwt.sign( payload, Env.get('APP_KEY'), {
@@ -18,4 +17,13 @@ export const generateJWT = (uuid: string) => {
             }
         });
     });
-}
+};
+
+export const verifyToken = (token: string) => {
+    try {
+        const payload = jwt.verify(token, Env.get('APP_KEY'));
+        return payload;
+    } catch (error) {
+        return null;
+    }
+};

@@ -1,15 +1,21 @@
 import UserModel from '../models/user.model';
-import { User } from '../interfaces/user.interface';
 import { encrypt, generateUuid, isUUid } from '../../Shared';
+import { RolesService } from '../../Roles/services/roles.service';
+import { CreateUserDto } from '../interfaces/create-user.interface';
 
 export class UsersService {
-    async createUser(data: User) {
+    constructor(private rolesService: RolesService) {}
+    
+    async createUser(data: CreateUserDto) {
         try {
             const uuid = generateUuid();
-            const { password, ...dataUser } = data;
+            const { password, roleUuid, ...dataUser } = data;
+            const role = await this.rolesService.findOne(roleUuid);
+
             const newUser = new UserModel({
                 ...dataUser,
                 uuid,
+                role,
                 password: encrypt(password)
             });
             await newUser.save();
@@ -45,11 +51,16 @@ export class UsersService {
         }
     }
 
-    async updateOne(dataToUpdate: Partial<User>) {
+    async updateOne(dataToUpdate: Partial<CreateUserDto>) {
         try {
             if(!dataToUpdate.uuid) return null;
             if(dataToUpdate.password) {
                 dataToUpdate.password = encrypt(dataToUpdate.password)
+            }
+
+            if(dataToUpdate.roleUuid) {
+                dataToUpdate['role'] = await this.rolesService.findOne(dataToUpdate.roleUuid);
+                delete dataToUpdate.roleUuid;
             }
 
             const user = await UserModel.findOneAndUpdate(

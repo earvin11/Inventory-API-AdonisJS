@@ -1,7 +1,7 @@
-import Route from "@ioc:Adonis/Core/Route";
-import { AuthController } from "../controllers/auth.controller";
-import { AuthService } from "../services/auth.service";
-import { UsersService } from "App/Users/services/user.service";
+import Route from '@ioc:Adonis/Core/Route';
+import { AuthController } from '../controllers/auth.controller';
+import { AuthService } from '../services/auth.service';
+import { UsersService } from 'App/Users/services/user.service';
 
 
 const controller = new AuthController(

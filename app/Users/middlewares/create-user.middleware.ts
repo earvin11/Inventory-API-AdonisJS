@@ -6,6 +6,7 @@ export default class CreateUserMiddleware {
     const createUserSchema = schema.create({
       email: schema.string(),
       password: schema.string(),
+      roleUuid: schema.string(),
     });
 
     try {
